@@ -8,23 +8,22 @@ def load_attempts(pages=10):
     for page in range(1, pages):
         pay_load = {'page': page}
         response = requests.get(url, params=pay_load).json()['records']
-        for item in response:
+        for user in response:
             yield {
-                'username': item['username'],
-                'timestamp': item['timestamp'],
-                'timezone': item['timezone'],
+                'username': user['username'],
+                'timestamp': user['timestamp'],
+                'timezone': user['timezone'],
             }
 
 
 def midnight_test(attempt, night_hours):
     timezone = pytz.timezone(attempt['timezone'])
     attempt_time = pytz.utc.localize(
-        datetime.utcfromtimestamp(attempt['timestamp'])).\
-        astimezone(timezone)
+        datetime.utcfromtimestamp(attempt['timestamp'])).astimezone(timezone)
     midnight = timezone.localize(
         datetime.combine(attempt_time.date(), time(0, 0)))
     morning = midnight + timedelta(hours=night_hours)
-    return (attempt_time > midnight) and (attempt_time <= morning)
+    return attempt_time > midnight and attempt_time <= morning
 
 
 def get_midnighters(attempts_list, night_hours):
@@ -49,4 +48,3 @@ if __name__ == '__main__':
     attempts_list = load_attempts()
     midnighters_list = get_midnighters(attempts_list, night_hours)
     print_midnighters(midnighters_list, night_hours)
-    
