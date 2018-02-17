@@ -1,6 +1,6 @@
 import requests
 import pytz
-from datetime import datetime, date, time, timedelta
+from datetime import datetime
 from itertools import groupby
 
 
@@ -16,7 +16,7 @@ def load_attempts():
                 'timestamp': attempt['timestamp'],
                 'timezone': attempt['timezone'],
             }
-        number_of_pages = int(json_data['number_of_pages'])
+        number_of_pages = json_data['number_of_pages']
         page += 1
 
 
@@ -55,6 +55,5 @@ def print_midnighters(night_owls, night_hours):
 
 if __name__ == '__main__':
     night_hours = 6
-    attempts_list = list(load_attempts())
-    night_owls = get_midnighters(attempts_list, night_hours)
+    night_owls = get_midnighters(load_attempts(), night_hours)
     print_midnighters(night_owls, night_hours)
