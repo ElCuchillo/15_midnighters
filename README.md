@@ -18,7 +18,7 @@ Note, the script needs additional python modules to work. It would be installed 
 
 ```bash
 
-$ pip3 instal -r requirements.txt
+$ pip3 install -r requirements.txt
 ```
 
 # Output example
